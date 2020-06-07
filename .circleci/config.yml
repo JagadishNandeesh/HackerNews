@@ -15,7 +15,6 @@ jobs:
   deploy:
     machine: true
     steps:
-      - checkout
       - node/with-cache:
           steps:
             - run: |
