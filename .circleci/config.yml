@@ -11,19 +11,16 @@ jobs:
           steps:
             - run: npm install
             - run: npm run build
-
-  deploy:
-    machine: true
-    steps:
-      - checkout
-      - node/with-cache:
-          steps:
             - run: |
                 echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
             - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH .
 
             # deploy the image
             - run: docker push jagadish11192/hackernews:$CIRCLE_BRANCH
+
+            - run: aws elasticbeanstalk create-application-version --region=us-east-2 --application-name Hackernews-env
+    --version-label jagadish11192/hackernews:$CIRCLE_BRANCH
+          
 
 workflows:
   build-and-test:
