@@ -11,6 +11,13 @@ jobs:
           steps:
             - run: npm install
             - run: npm run build
+
+  deploy:
+    machine: true
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
             - run: |
                 echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
             - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH .
@@ -24,3 +31,4 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test
+      - deploy
