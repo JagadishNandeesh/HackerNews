@@ -11,6 +11,15 @@ jobs:
           steps:
             - run: npm install
             - run: npm run build
+            - run: |
+                  echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+                  docker run -d --name db company/proprietary-db:1.2.3
+
+           # build the application image
+            - run: docker build -t company/app:$CIRCLE_BRANCH .
+
+           # deploy the image
+           - run: docker push company/app:$CIRCLE_BRANCH
 
 workflows:
   build-and-test:
