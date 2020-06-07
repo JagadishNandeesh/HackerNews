@@ -25,8 +25,7 @@ jobs:
             # deploy the image
             - run: docker push jagadish11192/hackernews:$CIRCLE_BRANCH
 
-            - run: aws elasticbeanstalk create-application-version --region=us-east-2 --application-name HackerNews --version-label hello-world:latest
-
+            - run: eb deploy hello-world:latest --region=us-east-2 --application-name HackerNews
 workflows:
   build-and-test:
     jobs:
