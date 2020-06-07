@@ -11,6 +11,13 @@ jobs:
           steps:
             - run: npm install
             - run: npm run build
+
+  deploy:
+    machine: true
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
             - run: |
                 echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
                 docker run -d --name db company/proprietary-db:1.2.3
@@ -23,3 +30,4 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test
+      - deploy
