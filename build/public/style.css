@@ -1,0 +1,46 @@
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 10pt;
+  color: #828282;
+}
+.wrapper {
+  margin: 0 auto;
+  min-width: 283px;
+  max-width: 1048px;
+  height: 100%;
+  padding: 1rem;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #828282;
+  position: relative;
+  top: 8px;
+}
+
+.header {
+  background-color: #ff6600;
+  color: white;
+}
+.row {
+  padding: 0.5rem;
+}
+
+.row-data:nth-child(even) {
+  background: #ffffff;
+}
+.row-data:nth-child(odd) {
+  background: #f6f6ef;
+}
+.paginator {
+  float: right;
+  margin-right: 1rem;
+}
+
+.paginator span {
+  margin: 1rem;
+}
+
