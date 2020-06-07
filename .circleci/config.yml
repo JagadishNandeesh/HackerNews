@@ -20,11 +20,11 @@ jobs:
           steps:
             - run: |
                 echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
-                docker run -d --name db company/proprietary-db:1.2.3
-            - run: docker build -t company/app:$CIRCLE_BRANCH .
+                docker run -d --name db node:latest
+            - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH
 
             # deploy the image
-            - run: docker push company/app:$CIRCLE_BRANCH
+            - run: docker push jagadish11192/hackernews:$CIRCLE_BRANCH
 
 workflows:
   build-and-test:
