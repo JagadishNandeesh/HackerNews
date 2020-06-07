@@ -18,12 +18,9 @@ jobs:
             # deploy the image
             - run: docker push jagadish11192/hackernews:$CIRCLE_BRANCH
 
-            - run: aws elasticbeanstalk create-application-version --region=us-east-2 --application-name Hackernews-env
-    --version-label jagadish11192/hackernews:$CIRCLE_BRANCH
-          
+            - run: aws elasticbeanstalk create-application-version --region=us-east-2 --application-name Hackernews-env --version-label jagadish11192/hackernews:$CIRCLE_BRANCH
 
 workflows:
   build-and-test:
     jobs:
       - build-and-test
-      - deploy
