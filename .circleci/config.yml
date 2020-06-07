@@ -25,4 +25,4 @@ jobs:
             sudo pip install awsebcli --upgrade
       - run:
           name: Deploying
-          command: eb deploy HackerNews
+          command: eb deploy Hackernews-env
