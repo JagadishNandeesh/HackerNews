@@ -20,7 +20,7 @@ jobs:
           steps:
             - run: |
                 echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
-            - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH
+            - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH .
 
             # deploy the image
             - run: docker push jagadish11192/hackernews:$CIRCLE_BRANCH
