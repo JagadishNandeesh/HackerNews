@@ -20,7 +20,6 @@ jobs:
           steps:
             - run: |
                 echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
-                docker run -d --name db node:latest
             - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH
 
             # deploy the image
