@@ -1,0 +1,8 @@
+branch-defaults:
+  master:
+    environment: Hackernews-env
+global:
+  application_name: Hackernews
+  default_platform: Docker 18.03.1-ce
+  default_region: eu-west-2
+  sc: git
