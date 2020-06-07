@@ -10,9 +10,15 @@ body {
   height: 100%;
   padding: 1rem;
 }
-.grid-container {
+.gridcontainer {
   border-bottom: 2px solid #fd8534;
   margin-bottom: 1rem;
+}
+
+.hostName {
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  color: grey;
 }
 
 .triangle {
@@ -33,6 +39,9 @@ body {
   padding: 0.5rem;
 }
 
+.row-data {
+  color: black;
+}
 .row-data:nth-child(even) {
   background: #ffffff;
 }

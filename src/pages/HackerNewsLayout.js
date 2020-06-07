@@ -3,8 +3,9 @@ import { Helmet } from "react-helmet";
 import "./HackerNews.css";
 import { Link } from "react-router-dom";
 import { Chart } from "react-charts";
+import { extractHostname } from "./../utilites/getHostName";
 
-function MyChart(props) {
+function LineChart(props) {
   const data = [
     {
       label: "Series 1",
@@ -46,6 +47,7 @@ function MyChart(props) {
       style={{
         width: "100%",
         height: "300px",
+        marginTop: "1rem",
       }}
     >
       <Chart data={data} axes={axes} options={options} />
@@ -108,7 +110,7 @@ export class HackerNewsLayout extends React.Component {
     return (
       <div className={`App wrapper`}>
         {head()}
-        <div className={"grid-container"}>
+        <div className={"gridcontainer"}>
           <div className="row header">
             <div className="col-md-1 col-sm-1 col-xs-1">Comments</div>
             <div className="col-md-1 col-sm-1 col-xs-1">Vote count</div>
@@ -132,7 +134,13 @@ export class HackerNewsLayout extends React.Component {
                     {" "}
                     <div className={"triangle"}></div>
                   </div>
-                  <div className="col-md-9 col-sm-9 col-xs-9">{`${news.title} ${news.title} by ${news.author}`}</div>
+                  <div className="col-md-9 col-sm-9 col-xs-9">
+                    {news.title} {news.title}
+                    <span className="hostName">
+                      {news.url ? extractHostname(news.url) : ""}
+                    </span>
+                    by {news.author}
+                  </div>
                 </div>
               );
             })}
@@ -152,7 +160,7 @@ export class HackerNewsLayout extends React.Component {
             </div>
           </div>
         </div>
-        <MyChart points={points} />
+        <LineChart points={points} />
       </div>
     );
   }

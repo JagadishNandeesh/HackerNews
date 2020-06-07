@@ -11,8 +11,6 @@ module.exports = {
     path: path.resolve(__dirname, "build/public"),
     publicPath: "./build/public",
   },
-  mode: "development",
-  devtool: "eval-source-map",
   module: {
     rules: [
       {
@@ -27,7 +25,7 @@ module.exports = {
               "css-modules-transform",
               {
                 camelCase: true,
-                extensions: [".css", ".scss"],
+                extensions: [".css"],
               },
             ],
             "dynamic-import-node",
@@ -43,6 +41,7 @@ module.exports = {
           {
             loader: miniCssExtractPlugin.loader,
           },
+          "style-loader",
           "css-loader",
         ],
       },
