@@ -5,13 +5,30 @@ import { News } from "./News";
 
 import { LineChart } from "./Linechart";
 
+const getDatafromLocalStorage = (id) => {
+  if (localStorage.getItem(id)) {
+    return JSON.parse(window.localStorage.getItem(id));
+  }
+  return false;
+};
+
 export class HackerNewsLayout extends React.Component {
   constructor(props) {
     super(props);
     let news;
     if (__isBrowser__) {
-      news = window.__INITIAL_DATA__;
-      delete window.__INITIAL_DATA__;
+      if (
+        getDatafromLocalStorage(
+          this.props.match.params.id ? this.props.match.params.id : 1
+        )
+      ) {
+        news = getDatafromLocalStorage(
+          this.props.match.params.id ? this.props.match.params.id : 1
+        );
+      } else {
+        news = window.__INITIAL_DATA__;
+        delete window.__INITIAL_DATA__;
+      }
     } else {
       news = props.staticContext.data;
     }
@@ -43,17 +60,49 @@ export class HackerNewsLayout extends React.Component {
       }
       return { ...item };
     });
+    if (__isBrowser__) {
+      localStorage.setItem(
+        this.props.match.params.id ? this.props.match.params.id : 1,
+        JSON.stringify(Object.assign({}, this.state.news, { hits: hits }))
+      );
+    }
     this.setState({ news: Object.assign({}, this.state.news, { hits: hits }) });
   };
 
   componentDidMount() {
     if (!this.state.news) {
-      this.fetchNews(this.props.match.params.id);
+      if (
+        getDatafromLocalStorage(
+          this.props.match.params.id ? this.props.match.params.id : 1
+        ) &&
+        __isBrowser__
+      ) {
+        this.setState({
+          news: getDatafromLocalStorage(
+            this.props.match.params.id ? this.props.match.params.id : 1
+          ),
+        });
+      } else {
+        this.fetchNews(this.props.match.params.id);
+      }
     }
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
-      this.fetchNews(this.props.match.params.id);
+      if (
+        getDatafromLocalStorage(
+          this.props.match.params.id ? this.props.match.params.id : 1
+        ) &&
+        __isBrowser__
+      ) {
+        this.setState({
+          news: getDatafromLocalStorage(
+            this.props.match.params.id ? this.props.match.params.id : 1
+          ),
+        });
+      } else {
+        this.fetchNews(this.props.match.params.id);
+      }
     }
   }
   fetchNews(id) {
