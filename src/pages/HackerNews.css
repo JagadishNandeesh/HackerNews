@@ -55,7 +55,15 @@ body {
 }
 
 .paginator span {
-  margin: 1rem;
+  padding: 0 1rem;
+  margin: 0;
+}
+
+.paginator span.prev {
+  border-right: 2px solid #ff6600;
+}
+.paginator span a {
+  color: #ff6600;
 }
 
 .hideButton {
