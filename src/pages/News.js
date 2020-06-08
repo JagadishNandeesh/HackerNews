@@ -16,29 +16,37 @@ export const News = ({ news, id, toggle, upvote }) => {
         news.hits &&
         news.hits.map((news, index) => {
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               {typeof news.show == "undefined" || news.show ? (
                 <div className="row row-data">
                   <div className="col-md-1 col-sm-1 col-xs-1">
                     {news.num_comments}
                   </div>
-                  <div className="col-md-1 col-sm-1 col-xs-1">
+                  <div
+                    data-testid="news-item-vote-count"
+                    className="col-md-1 col-sm-1 col-xs-1"
+                  >
                     {news.points}
                   </div>
                   <div className="col-md-1 col-sm-1 col-xs-1">
                     {" "}
                     <div
+                      data-testid="news-item-upvote-button"
                       onClick={() => upvote(index)}
                       className={"triangle"}
                     ></div>
                   </div>
-                  <div className="col-md-9 col-sm-9 col-xs-9">
-                    {news.title} {news.title}
+                  <div className="col-md-9 col-sm-9 col-xs-9 news-item-title">
+                    <span data-testid="news-item-title">{news.title}</span>
                     <span className="hostName">
                       {news.url ? extractHostname(news.url) : ""}
                     </span>
                     by {news.author}
-                    <span className="hideButton" onClick={() => toggle(index)}>
+                    <span
+                      data-testid="news-item-hide-button"
+                      className="hideButton"
+                      onClick={() => toggle(index)}
+                    >
                       [Hide]
                     </span>
                   </div>

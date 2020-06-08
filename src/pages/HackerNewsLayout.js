@@ -32,12 +32,7 @@ export class HackerNewsLayout extends React.Component {
       }
       return { ...item };
     });
-    this.setState(
-      { news: Object.assign({}, this.state.news, { hits: hits }) },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({ news: Object.assign({}, this.state.news, { hits: hits }) });
   };
 
   upvote = (id) => {
@@ -48,12 +43,7 @@ export class HackerNewsLayout extends React.Component {
       }
       return { ...item };
     });
-    this.setState(
-      { news: Object.assign({}, this.state.news, { hits: hits }) },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({ news: Object.assign({}, this.state.news, { hits: hits }) });
   };
 
   componentDidMount() {
