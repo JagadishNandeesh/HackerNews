@@ -28,7 +28,8 @@ body {
   border-right: 5px solid transparent;
   border-bottom: 5px solid #828282;
   position: relative;
-  top: 8px;
+  top: 0.5rem;
+  left: 1.5rem;
 }
 
 .header {
