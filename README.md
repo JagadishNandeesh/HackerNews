@@ -14,4 +14,4 @@ Step5 : React charts is used for line chart.
 
 Step6 : Circle ci setup is completed. It will take care of installing,testing and building the files for every checkin. Facing few issues in deploying the code.
 
-Step6 : Persistance of upvote and hide is done using local storage.
+Step7 : Persistance of upvote and hide is done using local storage.
