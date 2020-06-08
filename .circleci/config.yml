@@ -11,29 +11,22 @@ jobs:
           steps:
             - run: npm install
             - run: npm run build
-
-  deploy:
-    machine: true
-    steps:
-      - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm run build
-            - run: |
-                echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
-            - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH .
-
-            # deploy the image
-            - run: docker push jagadish11192/hackernews:$CIRCLE_BRANCH
-
-            # - run: aws elasticbeanstalk create-application-version --region=us-east-2 --application-name Hackernews --version-label hello-world:latest
-            # - run: aws elasticbeanstalk update-environment --application-name Hackernews --environment-name Hackernews-env  --version-label hello-world:latest --region us-east-2
+  # deploy:
+  #   machine: true
+  #   steps:
+  #     - checkout
+  #     - node/with-cache:
+  #         steps:
+  #           - run: npm install
+  #           - run: npm run build
+  #           - run: |
+  #               echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+  #           - run: docker build -t jagadish11192/hackernews:$CIRCLE_BRANCH .
+  #           # deploy the image
+  #           - run: docker push jagadish11192/hackernews:$CIRCLE_BRANCH
+  #           - run: aws elasticbeanstalk create-application-version --region=us-east-2 --application-name Hackernews --version-label jagadish11192/hackernews:$CIRCLE_BRANCH
+  #           - run: aws elasticbeanstalk update-environment --application-name Hackernews --environment-name Hackernews-env  --version-label jagadish11192/hackernews:$CIRCLE_BRANCH --region us-east-2
 workflows:
   build-and-test:
     jobs:
       - build-and-test
-      - deploy:
-  build-image:
-    jobs:
-      - deploy
