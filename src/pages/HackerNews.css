@@ -56,3 +56,12 @@ body {
 .paginator span {
   margin: 1rem;
 }
+
+.hideButton {
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+.brackets {
+  font-size: 1rem;
+  color: grey;
+}

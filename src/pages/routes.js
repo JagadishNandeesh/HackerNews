@@ -3,7 +3,7 @@ import { fetchNews } from "./../utilites/fetch";
 
 const routes = [
   {
-    path: "/:id",
+    path: "/:id?",
     exact: true,
     component: HackerNewsLayout,
     fetchInitialData: (path = "") => {

@@ -1,59 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import "./HackerNews.css";
-import { Link } from "react-router-dom";
-import { Chart } from "react-charts";
-import { extractHostname } from "./../utilites/getHostName";
+import { News } from "./News";
 
-function LineChart(props) {
-  const data = [
-    {
-      label: "Series 1",
-      data: props.points,
-    },
-  ];
-
-  const options = {
-    scales: {
-      yAxes: [
-        {
-          scaleLabel: {
-            display: true,
-            labelString: "Y text",
-          },
-        },
-      ],
-      xAxes: [
-        {
-          scaleLabel: {
-            display: true,
-            labelString: "X text",
-          },
-        },
-      ],
-    },
-  };
-
-  const axes = React.useMemo(
-    () => [
-      { primary: true, type: "ordinal", position: "bottom" },
-      { type: "linear", position: "left" },
-    ],
-    []
-  );
-
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "300px",
-        marginTop: "1rem",
-      }}
-    >
-      <Chart data={data} axes={axes} options={options} />
-    </div>
-  );
-}
+import { LineChart } from "./Linechart";
 
 export class HackerNewsLayout extends React.Component {
   constructor(props) {
@@ -69,10 +19,42 @@ export class HackerNewsLayout extends React.Component {
     this.state = {
       news,
       loading: news ? false : true,
+      points: [],
     };
 
     this.fetchNews = this.fetchNews.bind(this);
   }
+
+  toggle = (id) => {
+    const hits = this.state.news.hits.map((item, index) => {
+      if (index === id) {
+        return { ...item, show: false };
+      }
+      return { ...item };
+    });
+    this.setState(
+      { news: Object.assign({}, this.state.news, { hits: hits }) },
+      () => {
+        console.log(this.state);
+      }
+    );
+  };
+
+  upvote = (id) => {
+    const hits = this.state.news.hits.map((item, index) => {
+      if (index === id) {
+        let upvoteCount = parseInt(item.points, 10) + 1;
+        return { ...item, points: upvoteCount };
+      }
+      return { ...item };
+    });
+    this.setState(
+      { news: Object.assign({}, this.state.news, { hits: hits }) },
+      () => {
+        console.log(this.state);
+      }
+    );
+  };
 
   componentDidMount() {
     if (!this.state.news) {
@@ -100,6 +82,9 @@ export class HackerNewsLayout extends React.Component {
   render() {
     const { news, loading } = this.state;
     let points = [];
+    news.hits.map((currenValue) =>
+      points.push([currenValue.objectID, currenValue.points])
+    );
     const head = () => {
       return (
         <Helmet>
@@ -110,56 +95,17 @@ export class HackerNewsLayout extends React.Component {
     return (
       <div className={`App wrapper`}>
         {head()}
-        <div className={"gridcontainer"}>
-          <div className="row header">
-            <div className="col-md-1 col-sm-1 col-xs-1">Comments</div>
-            <div className="col-md-1 col-sm-1 col-xs-1">Vote count</div>
-            <div className="col-md-1 col-sm-1 col-xs-1">UpVote</div>
-            <div className="col-md-9 col-sm-9 col-xs-9">New Details</div>
-          </div>
+        <News
+          news={news}
+          id={
+            typeof this.props.match.params.id !== "number"
+              ? 1
+              : this.props.match.params.id
+          }
+          toggle={this.toggle}
+          upvote={this.upvote}
+        />
 
-          {news &&
-            news.hits &&
-            news.hits.map((news) => {
-              points.push([news.objectID, news.points]);
-              return (
-                <div className="row row-data">
-                  <div className="col-md-1 col-sm-1 col-xs-1">
-                    {news.num_comments}
-                  </div>
-                  <div className="col-md-1 col-sm-1 col-xs-1">
-                    {news.points}
-                  </div>
-                  <div className="col-md-1 col-sm-1 col-xs-1">
-                    {" "}
-                    <div className={"triangle"}></div>
-                  </div>
-                  <div className="col-md-9 col-sm-9 col-xs-9">
-                    {news.title} {news.title}
-                    <span className="hostName">
-                      {news.url ? extractHostname(news.url) : ""}
-                    </span>
-                    by {news.author}
-                  </div>
-                </div>
-              );
-            })}
-          <div class="row">
-            <div className="paginator">
-              <span>
-                <Link to={`/${parseInt(this.props.match.params.id, 10) - 1}`}>
-                  Prev
-                </Link>
-              </span>
-
-              <span>
-                <Link to={`/${parseInt(this.props.match.params.id, 10) + 1}`}>
-                  Next
-                </Link>
-              </span>
-            </div>
-          </div>
-        </div>
         <LineChart points={points} />
       </div>
     );

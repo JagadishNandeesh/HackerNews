@@ -1,7 +1,6 @@
 import React from "react";
 import routes from "./routes";
 import { Route, Link, Redirect, Switch } from "react-router-dom";
-import { NavBar } from "./NavBar";
 
 export const App = () => (
   <React.Fragment>

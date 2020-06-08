@@ -11,6 +11,7 @@ module.exports = {
     path: path.resolve(__dirname, "build/public"),
     publicPath: "./build/public",
   },
+  devtool: "eval-source-map",
   module: {
     rules: [
       {
@@ -21,13 +22,6 @@ module.exports = {
           presets: ["@babel/react", "@babel/env"],
           plugins: [
             "@babel/proposal-class-properties",
-            [
-              "css-modules-transform",
-              {
-                camelCase: true,
-                extensions: [".css"],
-              },
-            ],
             "dynamic-import-node",
             "@babel/plugin-transform-runtime",
             "@babel/plugin-transform-modules-commonjs",
@@ -41,7 +35,6 @@ module.exports = {
           {
             loader: miniCssExtractPlugin.loader,
           },
-          "style-loader",
           "css-loader",
         ],
       },
