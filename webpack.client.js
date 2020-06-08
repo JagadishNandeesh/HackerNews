@@ -11,7 +11,6 @@ module.exports = {
     path: path.resolve(__dirname, "build/public"),
     publicPath: "./build/public",
   },
-  devtool: "eval-source-map",
   module: {
     rules: [
       {
