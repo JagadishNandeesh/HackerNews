@@ -37,22 +37,26 @@ export class HackerNewsLayout extends React.Component {
       news,
       loading: news ? false : true,
       points: [],
+      pageId: 1,
     };
 
     this.fetchNews = this.fetchNews.bind(this);
   }
 
   toggle = (id) => {
-    const hits = this.state.news.hits.map((item, index) => {
-      if (index === id) {
-        return { ...item, show: false };
-      }
-      return { ...item };
-    });
+    const { news, pageId } = this.state;
+    const hits = [...news.hits.slice(0, id), ...news.hits.slice(id + 1)];
+    if (__isBrowser__) {
+      localStorage.setItem(
+        pageId,
+        JSON.stringify(Object.assign({}, this.state.news, { hits: hits }))
+      );
+    }
     this.setState({ news: Object.assign({}, this.state.news, { hits: hits }) });
   };
 
   upvote = (id) => {
+    const { pageId } = this.state;
     const hits = this.state.news.hits.map((item, index) => {
       if (index === id) {
         let upvoteCount = parseInt(item.points, 10) + 1;
@@ -62,7 +66,7 @@ export class HackerNewsLayout extends React.Component {
     });
     if (__isBrowser__) {
       localStorage.setItem(
-        this.props.match.params.id ? this.props.match.params.id : 1,
+        pageId,
         JSON.stringify(Object.assign({}, this.state.news, { hits: hits }))
       );
     }
@@ -70,39 +74,29 @@ export class HackerNewsLayout extends React.Component {
   };
 
   componentDidMount() {
+    const { pageId } = this.state;
     if (!this.state.news) {
-      if (
-        getDatafromLocalStorage(
-          this.props.match.params.id ? this.props.match.params.id : 1
-        ) &&
-        __isBrowser__
-      ) {
+      if (getDatafromLocalStorage(pageId) && __isBrowser__) {
         this.setState({
-          news: getDatafromLocalStorage(
-            this.props.match.params.id ? this.props.match.params.id : 1
-          ),
+          news: getDatafromLocalStorage(pageId),
         });
       } else {
-        this.fetchNews(this.props.match.params.id);
+        this.fetchNews(pageId);
       }
     }
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
-      if (
-        getDatafromLocalStorage(
-          this.props.match.params.id ? this.props.match.params.id : 1
-        ) &&
-        __isBrowser__
-      ) {
-        this.setState({
-          news: getDatafromLocalStorage(
-            this.props.match.params.id ? this.props.match.params.id : 1
-          ),
-        });
-      } else {
-        this.fetchNews(this.props.match.params.id);
-      }
+      this.setState({ pageId: this.props.match.params.id }, () => {
+        const { pageId } = this.state;
+        if (getDatafromLocalStorage(pageId) && __isBrowser__) {
+          this.setState({
+            news: getDatafromLocalStorage(pageId),
+          });
+        } else {
+          this.fetchNews(pageId);
+        }
+      });
     }
   }
   fetchNews(id) {
@@ -119,7 +113,7 @@ export class HackerNewsLayout extends React.Component {
   }
 
   render() {
-    const { news, loading } = this.state;
+    const { news, loading, pageId } = this.state;
     let points = [];
     news.hits.map((currenValue) =>
       points.push([currenValue.objectID, currenValue.points])
@@ -136,7 +130,7 @@ export class HackerNewsLayout extends React.Component {
         {head()}
         <News
           news={news}
-          id={this.props.match.params.id ? this.props.match.params.id : 1}
+          id={pageId}
           toggle={this.toggle}
           upvote={this.upvote}
         />
