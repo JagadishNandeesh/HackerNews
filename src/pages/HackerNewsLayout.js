@@ -97,11 +97,7 @@ export class HackerNewsLayout extends React.Component {
         {head()}
         <News
           news={news}
-          id={
-            typeof this.props.match.params.id !== "number"
-              ? 1
-              : this.props.match.params.id
-          }
+          id={this.props.match.params.id ? this.props.match.params.id : 1}
           toggle={this.toggle}
           upvote={this.upvote}
         />

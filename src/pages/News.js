@@ -39,7 +39,7 @@ export const News = ({ news, id, toggle, upvote }) => {
                     </span>
                     by {news.author}
                     <span className="hideButton" onClick={() => toggle(index)}>
-                      Hide
+                      [Hide]
                     </span>
                   </div>
                 </div>
